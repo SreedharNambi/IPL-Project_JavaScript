@@ -102,10 +102,17 @@ function mostEconomicalBowlerOf2015(inputData1,inputData2){
 
         }
     }
-    console.log(bowlerRecord);
+    // console.log(bowlerRecord);
     let min=100.0;
-    let i=0;
-    
+    for (let obj in bowlerRecord){
+        let values=bowlerRecord[obj];
+        let economy=values[1]*6.0/values[0];
+        if(economy<min){
+            min=economy;
+            reqBowler=obj;
+        }
+    }
+    console.log(`Most Economical bolwer of 2015 is ${reqBowler}`);
     }
 
     function numberMatchesWonByTeamInTheirHomeGround(inputData1){
