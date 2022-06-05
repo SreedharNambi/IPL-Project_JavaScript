@@ -5,6 +5,8 @@ const deliveriesData=csvToJson.fieldDelimiter(',').getJsonFromCsv('iplDataSet/de
 matchesPlayedPerEachYear(matchesData);
 numberOfMatchesWonByEachTeam(matchesData);
 numberOfRunsConcededByEachTeamIn2016(matchesData,deliveriesData);
+mostEconomicalBowlerOf2015(matchesData,deliveriesData);
+numberMatchesWonByTeamInTheirHomeGround(matchesData);
 
 function matchesPlayedPerEachYear(inputData){
     let matchesPlayedInEachYear={};
@@ -50,10 +52,8 @@ function numberOfRunsConcededByEachTeamIn2016(inputData1,inputData2){
             reqYearMatchIds.push(matchId);
         }
     }
-     console.log(reqYearMatchIds.length);
-     let count=0;
+    
     for(let record of inputData2){
-        count+=1;
         // let deliveryMatchId=record.match_id;
         // let bowlingTeam=record.bowling_team;
         // let runsConceded=record.extra_runs;
@@ -63,7 +63,64 @@ function numberOfRunsConcededByEachTeamIn2016(inputData1,inputData2){
 
         }
     }
+    console.log("Number of extra runs conceded by team in 2016 :");
     console.log(numberOfRunsConcededByEachTeamIn2016);
-    console.log(count);
+
 }
+
+function mostEconomicalBowlerOf2015(inputData1,inputData2){
+    let reqBowler='';
+    let reqYear='2015';
+    let reqYearMatchIds=[];
+    let bowlerRecord={};
+    let mostEconomicalBowlerOf2015={};
+    for (let obj of inputData1){
+        let year=obj.season;
+        let matchId=obj.id;
+        if(reqYear==year){
+            reqYearMatchIds.push(matchId);
+        }
+    }
+
+    for(let record of inputData2){
+        let matchId=record.match_id;
+        let bowler=record.bowler;
+        let totalRuns=record.total_runs;
+        if(matchId in reqYearMatchIds){
+            if(bowler in bowlerRecord){
+                prevRecord=bowlerRecord[bowler];
+                prevRecord[0]+=1;
+                prevRecord[1]+=Number(totalRuns);
+                bowlerRecord[bowler]=prevRecord;
+            }
+            else{
+                let bowlerStats=[];
+                bowlerStats[0]=1;
+                bowlerStats[1]=Number(totalRuns);
+                bowlerRecord[bowler]=bowlerStats;
+            }
+
+        }
+    }
+    console.log(bowlerRecord);
+    let min=100.0;
+    let i=0;
+    
+    }
+
+    function numberMatchesWonByTeamInTheirHomeGround(inputData1){
+        let reqTeam='Sunrisers Hyderabad';
+        let homeGround='Hyderabad';
+        let count=0;
+        for (let obj of inputData1){
+            let team=obj.winner;
+            let venue=obj.city;
+            if(reqTeam===team && homeGround===venue){
+                count+=1;
+            }
+        }
+        console.log(`Number matches won by ${reqTeam} in ${homeGround} is ${count}`);
+    }
+    
+
 
