@@ -1,4 +1,5 @@
 let csvToJson=require("convert-csv-to-json");
+const { includes } = require("lodash");
 const matchesData=csvToJson.fieldDelimiter(',').getJsonFromCsv('iplDataSet/matches.csv');
 const deliveriesData=csvToJson.fieldDelimiter(',').getJsonFromCsv('iplDataSet/deliveries.csv');
 
@@ -57,7 +58,7 @@ function numberOfRunsConcededByEachTeamIn2016(inputData1,inputData2){
         // let deliveryMatchId=record.match_id;
         // let bowlingTeam=record.bowling_team;
         // let runsConceded=record.extra_runs;
-        if(record.match_id in reqYearMatchIds){
+        if(reqYearMatchIds.includes(record.match_id)){
             let counter=record.bowling_team in numberOfRunsConcededByEachTeamIn2016?numberOfRunsConcededByEachTeamIn2016[record.bowling_team]:0;
             numberOfRunsConcededByEachTeamIn2016[record.bowling_team]=counter+Number(record.extra_runs);
 
@@ -86,7 +87,7 @@ function mostEconomicalBowlerOf2015(inputData1,inputData2){
         let matchId=record.match_id;
         let bowler=record.bowler;
         let totalRuns=record.total_runs;
-        if(matchId in reqYearMatchIds){
+        if(reqYearMatchIds.includes(matchId)){
             if(bowler in bowlerRecord){
                 prevRecord=bowlerRecord[bowler];
                 prevRecord[0]+=1;
